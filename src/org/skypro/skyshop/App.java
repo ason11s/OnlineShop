@@ -1,16 +1,24 @@
 package org.skypro.skyshop;
 
+import org.skypro.skyshop.article.Article;
 import org.skypro.skyshop.basket.ProductBasket;
+import org.skypro.skyshop.product.DiscountedProduct;
+import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.Product;
+import org.skypro.skyshop.product.SimpleProduct;
+import org.skypro.skyshop.search.SearchEngine;
+import org.skypro.skyshop.search.Searchable;
+
+import java.util.Arrays;
 
 public class App {
     public static void main(String[] args) {
-        Product product1 = new Product("йогурт", 50);
-        Product product2 = new Product("кефир", 39);
-        Product product3 = new Product("молоко", 45);
-        Product product4 = new Product("сметана", 40);
-        Product product5 = new Product("сыр", 150);
-        Product product6 = new Product("сливки", 35);
+        Product product1 = new SimpleProduct("йогурт", 50);
+        Product product2 = new SimpleProduct("кефир", 39);
+        Product product3 = new SimpleProduct("молоко", 45);
+        Product product4 = new DiscountedProduct("сметана", 40, 10);
+        Product product5 = new FixPriceProduct("сыр");
+        Product product6 = new SimpleProduct("сливки", 35);
 
         ProductBasket basket = new ProductBasket();
         basket.addProduct(product1);
@@ -19,6 +27,30 @@ public class App {
         basket.addProduct(product4);
         basket.addProduct(product5);
         //basket.addProduct(product6);
+
+        SearchEngine searchEngine = new SearchEngine(10);
+        searchEngine.add(product1);
+        searchEngine.add(product2);
+        searchEngine.add(product3);
+        searchEngine.add(product4);
+        searchEngine.add(product5);
+
+        Article article1 = new Article("Вкусный йогурт", "Йогрут улучшает пищеварение");
+        Article article2 = new Article("Польза кефира", "Кефир содержит много белка");
+        searchEngine.add(article1);
+        searchEngine.add(article2);
+
+        System.out.println("\nПоиск по слову 'Йогурт':");
+        System.out.println(Arrays.toString( searchEngine.search("Йогурт")));
+        System.out.println("\nПоиск по слову 'молоко':");
+        System.out.println(Arrays.toString(searchEngine.search("молоко")));
+
+        System.out.println("\nПоиск по слову 'белка':");
+        System.out.println(Arrays.toString(searchEngine.search("белка")));
+
+        System.out.println("\nПоиск по слову 'шоколад':");
+        System.out.println(Arrays.toString(searchEngine.search("шоколад")));
+
 
 
         System.out.println("\nСодержимое корзины");
