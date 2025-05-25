@@ -8,6 +8,7 @@ import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
 import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
+import org.skypro.skyshop.search.BestResultNotFound;
 
 import java.util.Arrays;
 
@@ -77,5 +78,50 @@ public class App {
         System.out.println("\nЕсть ли 'молоко' в пустой корзине?");
         System.out.println(basket.containsProduct("молоко"));
 
+        System.out.println("Проверка валидации продуктов");
+        try {
+            Product InvalidProduct1 = new SimpleProduct(" ", 50);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+        try {
+            Product invalidProduct2 = new SimpleProduct("Творог", 0);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+
+        try {
+            Product invalidProduct3 = new DiscountedProduct("Масло", -20, 15);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+
+        try {
+            Product invalidProduct4 = new DiscountedProduct("Майонез", 50, 110);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+
+        try {
+            Product invalidProduct5 = new DiscountedProduct("Хлеб", 40, -5);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+
+        System.out.println("\nПоиск самого подходящего объекта:");
+
+        try {
+            Searchable bestMatch = searchEngine.findBestMatch("кефир");
+            System.out.println("Лучший результат поиска: " + bestMatch.getStringRepresentation());
+        } catch (BestResultNotFound e) {
+            System.out.println("Ошибка поиска: " + e.getMessage());
+        }
+
+        try {
+            Searchable bestMatch = searchEngine.findBestMatch("шоколад");
+            System.out.println("Лучший результат поиска: " + bestMatch.getStringRepresentation());
+        } catch (BestResultNotFound e) {
+            System.out.println("Ошибка поиска: " + e.getMessage());
+        }
     }
 }
