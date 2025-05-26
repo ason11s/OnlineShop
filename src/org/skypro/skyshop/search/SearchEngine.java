@@ -48,6 +48,9 @@ public class SearchEngine {
                 bestMatch = item;
             }
         }
+        if (bestMatch == null) {
+            throw new BestResultNotFound(search);
+        }
         return bestMatch;
         }
     }
