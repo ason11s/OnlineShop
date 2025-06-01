@@ -1,42 +1,39 @@
 package org.skypro.skyshop.search;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 public class SearchEngine {
 
-    private Searchable[] items;
+    private final List<Searchable> items;
 
-    public SearchEngine(int size) {
-        this.items = new Searchable[size];
+    public SearchEngine() {
+        this.items = new ArrayList<>();
     }
-
-    private int currentIndex = 0;
 
     public void add(Searchable item){
-        if(currentIndex < items.length){
-            items[currentIndex] = item;
-            currentIndex++;
-        }
+        items.add(item);
     }
-    public Searchable[] search(String term){
-        Searchable[] results = new Searchable[5];
-        int resultsIndex = 0;
-        for (Searchable item: items) {
-            if (item != null && item.getSearchTerm().toLowerCase().contains(term.toLowerCase())){
-                results [resultsIndex] = item;
-                resultsIndex++;
-            }
-            if (resultsIndex == 5){
-                break;
+
+    public Map<String, Searchable> search (String term){
+        Map<String, Searchable> results = new TreeMap<>();
+        String termLower = term.toLowerCase();
+        for (Searchable item : items) {
+            if (item.getSearchTerm().toLowerCase().contains(termLower)) {
+                results.put(item.getSearchTerm(), item);
             }
         }
         return results;
     }
+
     public Searchable findBestMatch (String search) throws BestResultNotFound{
         int maxCount = 0;
         Searchable bestMatch = null;
+        String searchLower = search.toLowerCase();
         for ( Searchable item : items){
-           if (item == null) continue;
-           String searchTerm = item.getSearchTerm().toLowerCase();
-           String searchLower = search.toLowerCase();
+            String searchTerm = item.getSearchTerm().toLowerCase();
             int count = 0;
             int index = 0;
             while ((index = searchTerm.indexOf(searchLower, index)) != -1){
