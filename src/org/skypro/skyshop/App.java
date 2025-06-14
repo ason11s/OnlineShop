@@ -9,6 +9,7 @@ import org.skypro.skyshop.product.SimpleProduct;
 import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
 import org.skypro.skyshop.search.BestResultNotFound;
+import java.util.Set;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -171,15 +172,14 @@ public class App {
             }
         }
     }
-    private static void printSearchResults(Map<String, Searchable> results) {
+    private static void printSearchResults(Set<Searchable> results) {
         if (results.isEmpty()) {
             System.out.println("Результаты не найдены");
             return;
         }
 
-        for (Map.Entry<String, Searchable> entry : results.entrySet()) {
-            System.out.println("Имя: " + entry.getKey());
-            System.out.println("Объект: " + entry.getValue().getStringRepresentation());
+        for (Searchable item : results) {
+            System.out.println(item.getStringRepresentation());
             System.out.println("---------------------------");
         }
     }
